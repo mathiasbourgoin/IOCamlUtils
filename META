@@ -1,0 +1,6 @@
+version = "0.1-alpha"
+description = "iocamlutils"
+requires = "js_of_ocaml"
+archive(byte) = "IOCamlUtils.cma"
+browse_interfaces = " Unit name: IOCaml "
+exists_if = "IOCamlUtils.cma"
