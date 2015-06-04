@@ -1,9 +1,9 @@
 VERSION=01-alpha
-PACKAGES=js_of_ocaml,lwt
+PACKAGES=js_of_ocaml,lwt,spoc
 SYNTAX=js_of_ocaml.syntax
 DIR=$(notdir $(CURDIR))
 LIBNAME=$(shell tr '[:upper:]' '[:lower:]' <<< $(DIR))
-SRC=Error.ml Cells.ml
+SRC=Error.ml Cells.ml Bench.ml Display.ml
 MLOBJ_B=$(SRC:.ml=.cmo)
 
 cc=ocamlc
@@ -23,16 +23,16 @@ build : $(LIBNAME).cma
 
 $(LIBNAME).cma : $(DIR).cmo
 	@echo "\033[32m[$@]\033[0m"
-	@ocamlfind ocamlc -package $(PACKAGES) -a  -linkall -o $@ $<
+	@ocamlfind ocamlc -thread -package $(PACKAGES) -a  -linkall -o $@ $<
 
 
 $(DIR).cmo : $(MLOBJ_B)
 	@echo "\033[32m[$@]\033[0m"
-	@ocamlfind ocamlc -pack -package $(PACKAGES)  -o $@ $(MLOBJ_B)
+	@ocamlfind ocamlc -thread -pack -package $(PACKAGES)  -o $@ $(MLOBJ_B)
 
 %.cmo:%.ml
 	@echo "\033[32m[$@]\033[0m"
-	@ocamlfind ocamlc  -package $(PACKAGES)  -syntax camlp4o -package $(SYNTAX) -for-pack $(DIR) -c $< 2>>log
+	@ocamlfind ocamlc -thread  -package $(PACKAGES)  -syntax camlp4o -package $(SYNTAX) -for-pack $(DIR) -c $< 2>>log
 
 depend:
 	ocamlfind ocamldep -syntax camlp4o -package $(SYNTAX) *.ml > .depend

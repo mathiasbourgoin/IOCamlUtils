@@ -16,10 +16,15 @@ let get_canvas name =
 let get_p name =
     get name Dom_html.CoerceTo.p
 
+let get_td name =
+  get name Dom_html.CoerceTo.td
 
+let get_table name =
+  get name Dom_html.CoerceTo.table
+			    
 module Canvas =
   struct
     let context_2d c = c##getContext (Dom_html._2d_)
-    let get_image c =(context_2d c)##getImageData
-    let put_image c = (context_2d c)##putImageData 
+    let get_image c (x, y, width, height)  =(context_2d c)##getImageData (x, y, width, height)
+    let put_image c (data, x, y) = (context_2d c)##putImageData (data,x,y)
   end
